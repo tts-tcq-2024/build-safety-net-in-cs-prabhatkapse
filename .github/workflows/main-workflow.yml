@@ -1,0 +1,46 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install lizard
+      run: pip install lizard
+
+    - name: Limit complexity
+      run: $HOME/.local/bin/lizard --CCN 3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Run tests and collect coverage
+      run: dotnet test --collect:"XPlat Code Coverage"
+
+    - name: Install coverage report generator
+      run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+    - name: Make coverage report
+      run: reportgenerator -reports:"/home/runner/work/code-test-cover-cs/code-test-cover-cs/TestResults/**/coverage.cobertura.xml" -targetdir:"coverage" -reporttypes:"Html"
+    
+    - name: Create coverage artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: coverage
+        retention-days: 21
