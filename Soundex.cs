@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 public class Soundex
@@ -13,14 +15,36 @@ public class Soundex
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
+        int count = 1; // To count the number of digits added
+        var vowelSeprateSameCode = false;
 
-        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
+        for (int i = 1; i < name.Length && count < 4; i++)
         {
-            char code = GetSoundexCode(name[i]);
-            if (code != '0' && code != prevCode)
+            char currentChar = char.ToUpper(name[i]);
+            char code = GetSoundexCode(currentChar);
+
+            if (code == 0)
+            {
+                if (currCharIsVowel(currentChar))
+                {
+                    vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode);
+                    continue;
+                }
+                else if (checkIfHWSeprateSameCode(name, i, prevCode, currentChar))
+                {
+                    continue;
+                }
+
+                continue;
+            }
+
+
+            if ((code != prevCode) || (vowelSeprateSameCode))
             {
                 soundex.Append(code);
                 prevCode = code;
+                count++;
+                vowelSeprateSameCode = false;
             }
         }
 
@@ -32,7 +56,49 @@ public class Soundex
         return soundex.ToString();
     }
 
-    private static char GetSoundexCode(char c)
+     private static bool currCharIsVowel(char currentChar)
+        {
+            var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
+
+            if (vowels.Contains(currentChar))
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+    private static bool checkIfVowelSeprateSameCode(string name, int index, char prevCode)
+    {
+        if (index + 1 < name.Length)
+        {
+            char nextCode = GetSoundexCode(name[index + 1]);
+            if (nextCode == prevCode)
+            {
+                return true; //code the number twice if separated by a vowel other than H or W
+            }
+        }
+        return false;
+    }
+
+    private static bool checkIfHWSeprateSameCode(string name, int index, char prevCode, char currentChar)
+    {
+        if (currentChar == 'H' || currentChar == 'W')
+        {
+            if (index + 1 < name.Length)
+            {
+                char nextCode = GetSoundexCode(name[index + 1]);
+                if (nextCode == prevCode)
+                {
+                    return true; // Skip h or w if it separates two same codes
+                }
+            }
+        }
+
+        return false;
+    }
+
+private static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
         switch (c)
