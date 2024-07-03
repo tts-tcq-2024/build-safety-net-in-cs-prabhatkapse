@@ -30,7 +30,7 @@ public class Soundex
                     vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode);
                     continue;
                 }
-                else if (checkIfHWSeprateSameCode(name, i, prevCode, currentChar))
+                else if (CheckIfHWSeparateSameCode(name, i, prevCode, currentChar))
                 {
                     continue;
                 }
@@ -81,18 +81,20 @@ public class Soundex
         return false;
     }
 
-    private static bool checkIfHWSeprateSameCode(string name, int index, char prevCode, char currentChar)
+     private static bool CheckIfHWSeparateSameCode(string name, int index, char prevCode, char currentChar)
     {
-        if ((currentChar == 'H' || currentChar == 'W') && (index + 1 < name.Length))
+        if (currentChar != 'H' && currentChar != 'W')
         {
-            char nextCode = GetSoundexCode(name[index + 1]);
-            if (nextCode == prevCode)
-            {
-                return true; // Skip h or w if it separates two same codes
-            }
+            return false;
         }
 
-        return false;
+        if (index + 1 >= name.Length)
+        {
+            return false;
+        }
+
+        char nextCode = GetSoundexCode(name[index + 1]);
+        return nextCode == prevCode;
     }
 
     private static readonly Dictionary<char, char> SoundexCodeMap = new Dictionary<char, char>
