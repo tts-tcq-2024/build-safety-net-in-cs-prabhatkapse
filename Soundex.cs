@@ -83,52 +83,33 @@ public class Soundex
 
     private static bool checkIfHWSeprateSameCode(string name, int index, char prevCode, char currentChar)
     {
-        if (currentChar == 'H' || currentChar == 'W')
+        if ((currentChar == 'H' || currentChar == 'W') && (index + 1 < name.Length))
         {
-            if (index + 1 < name.Length)
+            char nextCode = GetSoundexCode(name[index + 1]);
+            if (nextCode == prevCode)
             {
-                char nextCode = GetSoundexCode(name[index + 1]);
-                if (nextCode == prevCode)
-                {
-                    return true; // Skip h or w if it separates two same codes
-                }
+                return true; // Skip h or w if it separates two same codes
             }
         }
 
         return false;
     }
 
-private static char GetSoundexCode(char c)
+    private static readonly Dictionary<char, char> SoundexCodeMap = new Dictionary<char, char>
+{
+    { 'B', '1' }, { 'F', '1' }, { 'P', '1' }, { 'V', '1' },
+    { 'C', '2' }, { 'G', '2' }, { 'J', '2' }, { 'K', '2' },
+    { 'Q', '2' }, { 'S', '2' }, { 'X', '2' }, { 'Z', '2' },
+    { 'D', '3' }, { 'T', '3' },
+    { 'L', '4' },
+    { 'M', '5' }, { 'N', '5' },
+    { 'R', '6' }
+};
+
+    private static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
-        switch (c)
-        {
-            case 'B':
-            case 'F':
-            case 'P':
-            case 'V':
-                return '1';
-            case 'C':
-            case 'G':
-            case 'J':
-            case 'K':
-            case 'Q':
-            case 'S':
-            case 'X':
-            case 'Z':
-                return '2';
-            case 'D':
-            case 'T':
-                return '3';
-            case 'L':
-                return '4';
-            case 'M':
-            case 'N':
-                return '5';
-            case 'R':
-                return '6';
-            default:
-                return '0'; // For A, E, I, O, U, H, W, Y
-        }
+        return SoundexCodeMap.TryGetValue(c, out char code) ? code : '0'; // For A, E, I, O, U, H, W, Y
     }
+}
 }
