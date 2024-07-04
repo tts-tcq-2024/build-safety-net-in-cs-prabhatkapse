@@ -28,13 +28,7 @@ public class Soundex
                 if (currCharIsVowel(currentChar))
                 {
                     vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode);
-                    continue;
                 }
-                else if (CheckIfHWSeparateSameCode(name, i, prevCode, currentChar))
-                {
-                    continue;
-                }
-
                 continue;
             }
 
@@ -81,37 +75,20 @@ public class Soundex
         return false;
     }
 
-     private static bool CheckIfHWSeparateSameCode(string name, int index, char prevCode, char currentChar)
-    {
-        if (currentChar != 'H' && currentChar != 'W')
-        {
-            return false;
-        }
-
-        if (index + 1 >= name.Length)
-        {
-            return false;
-        }
-
-        char nextCode = GetSoundexCode(name[index + 1]);
-        return nextCode == prevCode;
-    }
-
     private static readonly Dictionary<char, char> SoundexCodeMap = new Dictionary<char, char>
-{
-    { 'B', '1' }, { 'F', '1' }, { 'P', '1' }, { 'V', '1' },
-    { 'C', '2' }, { 'G', '2' }, { 'J', '2' }, { 'K', '2' },
-    { 'Q', '2' }, { 'S', '2' }, { 'X', '2' }, { 'Z', '2' },
-    { 'D', '3' }, { 'T', '3' },
-    { 'L', '4' },
-    { 'M', '5' }, { 'N', '5' },
-    { 'R', '6' }
-};
+    {
+        { 'B', '1' }, { 'F', '1' }, { 'P', '1' }, { 'V', '1' },
+        { 'C', '2' }, { 'G', '2' }, { 'J', '2' }, { 'K', '2' },
+        { 'Q', '2' }, { 'S', '2' }, { 'X', '2' }, { 'Z', '2' },
+        { 'D', '3' }, { 'T', '3' },
+        { 'L', '4' },
+        { 'M', '5' }, { 'N', '5' },
+        { 'R', '6' }
+    };
 
     private static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
         return SoundexCodeMap.TryGetValue(c, out char code) ? code : '0'; // For A, E, I, O, U, H, W, Y
     }
-}
 }
