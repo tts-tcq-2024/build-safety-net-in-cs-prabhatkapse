@@ -32,7 +32,7 @@ public class Soundex
         char prevCode = GetSoundexCode(name[0]);
         var vowelSeprateSameCode = false;
 
-        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
+        for (int i = 1; i < name.Length && soundex.Length < 3; i++)
         {
             char currentChar = name[i];
             char code = GetSoundexCode(currentChar);
@@ -42,7 +42,7 @@ public class Soundex
                 vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, currentChar);
                 continue;
             }
-            else if ((code != prevCode) || (vowelSeprateSameCode))
+            else if (ShouldAppendCode(code, prevCode, vowelSeprateSameCode))
             {
                 soundex.Append(code);
                 prevCode = code;
@@ -53,9 +53,14 @@ public class Soundex
         return PadSoundex(soundex);
     }
 
+    private static bool ShouldAppendCode(char code, char prevCode, bool vowelSeprateSameCode)
+    {
+        return (code != prevCode) || (vowelSeprateSameCode);
+    }
+
     private static string PadSoundex(StringBuilder soundex)
     {
-        while (soundex.Length < 4)
+        while (soundex.Length < 3)
         {
             soundex.Append(0);
         }
