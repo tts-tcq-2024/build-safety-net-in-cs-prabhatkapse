@@ -34,12 +34,11 @@ public class Soundex
 
         for (int i = 1; i < name.Length && soundex.Length < 3; i++)
         {
-            char currentChar = name[i];
-            char code = GetSoundexCode(currentChar);
+            char code = GetSoundexCode(name[i]);
 
             if (code == 0)
             {
-                vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, currentChar);
+                vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, name[i]);
                 continue;
             }
             else if (ShouldAppendCode(code, prevCode, vowelSeprateSameCode))
