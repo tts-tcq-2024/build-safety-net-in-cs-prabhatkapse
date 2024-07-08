@@ -40,20 +40,23 @@ public class Soundex
                 count++;
                 vowelSeprateSameCode = false;
             }
-        }
+      
+            return PadSoundex(soundex);
+      }
 
+    private static string PadSoundex(StringBuilder soundex)
+    {
         while (soundex.Length < 4)
         {
-            soundex.Append('0');
+            soundex.Append(0);
         }
-         
         return soundex.ToString();
-     }
-         
+    }
+    
      private static bool currCharIsVowel(char currentChar)
         {
             var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
-
+    
             return vowels.Contains(currentChar);
         }
 
