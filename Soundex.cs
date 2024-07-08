@@ -28,9 +28,7 @@ public class Soundex
                vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, currentChar);
                continue;
             }
-
-
-            if ((code != prevCode) || (vowelSeprateSameCode))
+            else if ((code != prevCode) || (vowelSeprateSameCode))
             {
                 soundex.Append(code);
                 prevCode = code;
