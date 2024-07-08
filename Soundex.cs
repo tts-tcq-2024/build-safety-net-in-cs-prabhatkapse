@@ -40,9 +40,9 @@ public class Soundex
                 count++;
                 vowelSeprateSameCode = false;
             }
-
-            return PadSoundex(soundex);
+                     
         }
+        return PadSoundex(soundex);
     }
 
     private static string PadSoundex(StringBuilder soundex)
