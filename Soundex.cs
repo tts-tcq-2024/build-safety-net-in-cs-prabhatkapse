@@ -15,8 +15,8 @@ public class Soundex
         return SoundIndex(name);
     }
 
-     private static string SoundIndex(string name)
-     {
+    private static string SoundIndex(string name)
+    {
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
@@ -30,8 +30,8 @@ public class Soundex
 
             if (code == 0)
             {
-               vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, currentChar);
-               continue;
+                vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, currentChar);
+                continue;
             }
             else if ((code != prevCode) || (vowelSeprateSameCode))
             {
@@ -40,9 +40,10 @@ public class Soundex
                 count++;
                 vowelSeprateSameCode = false;
             }
-      
+
             return PadSoundex(soundex);
-      }
+        }
+    }
 
     private static string PadSoundex(StringBuilder soundex)
     {
@@ -52,18 +53,18 @@ public class Soundex
         }
         return soundex.ToString();
     }
-    
-     private static bool currCharIsVowel(char currentChar)
-        {
-            var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
-    
-            return vowels.Contains(currentChar);
-        }
+
+    private static bool currCharIsVowel(char currentChar)
+    {
+        var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
+
+        return vowels.Contains(currentChar);
+    }
 
 
     private static bool checkIfVowelSeprateSameCode(string name, int index, char prevCode, char currentChar)
     {
-        return (index + 1 < name.Length) && currCharIsVowel(currentChar) && (GetSoundexCode(name[index + 1]) == prevCode);;
+        return (index + 1 < name.Length) && currCharIsVowel(currentChar) && (GetSoundexCode(name[index + 1]) == prevCode); ;
     }
 
     private static readonly Dictionary<char, char> SoundexCodeMap = new Dictionary<char, char>
