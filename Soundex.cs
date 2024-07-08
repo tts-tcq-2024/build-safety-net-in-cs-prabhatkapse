@@ -12,20 +12,29 @@ public class Soundex
             return string.Empty;
         }
 
-        return SoundIndex(name);
+        StringBuilder soundex = new StringBuilder();
+
+        ProcessInitialChar(name, out soundex);
+
+        soundex.Append(ProcessRemainingChar(name.ToUpper()));
+
+        return soundex.ToString();
+    }
+    private static void ProcessInitialChar(string name, out StringBuilder soundex)
+    {
+        soundex = new StringBuilder();
+        soundex.Append(char.ToUpper(name[0]));
     }
 
-    private static string SoundIndex(string name)
+    private static string ProcessRemainingChar(string name)
     {
         StringBuilder soundex = new StringBuilder();
-        soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
-        int count = 1; // To count the number of digits added
         var vowelSeprateSameCode = false;
 
-        for (int i = 1; i < name.Length && count < 4; i++)
+        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
-            char currentChar = char.ToUpper(name[i]);
+            char currentChar = name[i];
             char code = GetSoundexCode(currentChar);
 
             if (code == 0)
@@ -37,7 +46,6 @@ public class Soundex
             {
                 soundex.Append(code);
                 prevCode = code;
-                count++;
                 vowelSeprateSameCode = false;
             }
                      
