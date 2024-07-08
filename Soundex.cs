@@ -12,6 +12,11 @@ public class Soundex
             return string.Empty;
         }
 
+        return SoundIndex(name);
+    }
+
+     private static string SoundIndex(string name)
+     {
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
@@ -41,10 +46,10 @@ public class Soundex
         {
             soundex.Append('0');
         }
-
+         
         return soundex.ToString();
-    }
-
+     }
+         
      private static bool currCharIsVowel(char currentChar)
         {
             var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
