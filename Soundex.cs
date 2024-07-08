@@ -25,11 +25,8 @@ public class Soundex
 
             if (code == 0)
             {
-                if (currCharIsVowel(currentChar))
-                {
-                    vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode);
-                }
-                continue;
+               vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, currentChar);
+               continue;
             }
 
 
@@ -62,9 +59,9 @@ public class Soundex
         }
 
 
-    private static bool checkIfVowelSeprateSameCode(string name, int index, char prevCode)
+    private static bool checkIfVowelSeprateSameCode(string name, int index, char prevCode, char currentChar)
     {
-        if (index + 1 < name.Length)
+        if ((index + 1 < name.Length) && currCharIsVowel(currentChar))
         {
             char nextCode = GetSoundexCode(name[index + 1]);
             if (nextCode == prevCode)
