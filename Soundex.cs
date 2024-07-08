@@ -51,25 +51,13 @@ public class Soundex
         {
             var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
 
-            if (vowels.Contains(currentChar))
-            {
-                return true;
-            }
-            return false;
+            return vowels.Contains(currentChar);
         }
 
 
     private static bool checkIfVowelSeprateSameCode(string name, int index, char prevCode, char currentChar)
     {
-        if ((index + 1 < name.Length) && currCharIsVowel(currentChar))
-        {
-            char nextCode = GetSoundexCode(name[index + 1]);
-            if (nextCode == prevCode)
-            {
-                return true; //code the number twice if separated by a vowel other than H or W
-            }
-        }
-        return false;
+        return (index + 1 < name.Length) && currCharIsVowel(currentChar) && (GetSoundexCode(name[index + 1]) == prevCode);;
     }
 
     private static readonly Dictionary<char, char> SoundexCodeMap = new Dictionary<char, char>
