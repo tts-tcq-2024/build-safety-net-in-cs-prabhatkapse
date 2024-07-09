@@ -41,28 +41,21 @@ public class Soundex
                 vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, name[i]);
                 continue;
             }
-            else if (ShouldAppendCode(code, prevCode, vowelSeprateSameCode))
-            {
-                AppendCode(ref soundex, code, ref prevCode, ref vowelSeprateSameCode);
-                //soundex.Append(code);
-                //prevCode = code;
-                //vowelSeprateSameCode = false;
-            }
-                     
+
+            AppendCode(ref soundex, code, ref prevCode, ref vowelSeprateSameCode);
+     
         }
         return PadSoundex(soundex);
-    }
-
-    private static bool ShouldAppendCode(char code, char prevCode, bool vowelSeprateSameCode)
-    {
-        return (code != prevCode) || (vowelSeprateSameCode);
     }
     
     private static void AppendCode(ref StringBuilder soundex, char code, ref char prevCode, ref bool vowelSeprateSameCode)
     {
-        soundex.Append(code);
-        prevCode = code;
-        vowelSeprateSameCode = false;
+        if ((code != prevCode) || (vowelSeprateSameCode))
+        {
+            soundex.Append(code);
+            prevCode = code;
+            vowelSeprateSameCode = false;
+        }
     }
 
 
