@@ -36,13 +36,13 @@ public class Soundex
         {
             char code = GetSoundexCode(name[i]);
 
-            checkIfVowelSeprateSameCode(name, i, prevCode, name[i], ref vowelSeprateSameCode);
+            checkIfVowelSeprateSameCode(prevCode, code, name[i-1], soundex, ref vowelSeprateSameCode);
             AppendCode(ref soundex, code, ref prevCode, ref vowelSeprateSameCode);
-     
+
         }
         return PadSoundex(soundex);
     }
-    
+
     private static void AppendCode(ref StringBuilder soundex, char code, ref char prevCode, ref bool vowelSeprateSameCode)
     {
         if (ShouldAppendCode(code, prevCode, vowelSeprateSameCode))
@@ -51,10 +51,10 @@ public class Soundex
             prevCode = code;
             vowelSeprateSameCode = false;
         }
-    } 
+    }
     private static bool ShouldAppendCode(char code, char prevCode, bool vowelSeprateSameCode)
     {
-        return ((code != prevCode) && (code != '0')) || vowelSeprateSameCode;
+         return ((code != prevCode) && (code != '0')) || vowelSeprateSameCode;
     }
 
     private static string PadSoundex(StringBuilder soundex)
@@ -66,18 +66,17 @@ public class Soundex
         return soundex.ToString();
     }
 
-    private static bool currCharIsVowel(char currentChar)
+    private static bool CharIsVowel(char Char)
     {
         var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
 
-        return vowels.Contains(currentChar);
+        return vowels.Contains(Char);
     }
 
 
-    private static void checkIfVowelSeprateSameCode(string name, int index, char prevCode, char currentChar, ref bool vowelSeprateSameCode)
+    private static void checkIfVowelSeprateSameCode(char prevCode, char code, char prevChar, StringBuilder soundex, ref bool vowelSeprateSameCode)
     {
-        vowelSeprateSameCode = ((index + 1 < name.Length) && currCharIsVowel(currentChar) && (GetSoundexCode(name[index + 1]) == prevCode));
-            
+        vowelSeprateSameCode = ((soundex.Length >= 1) && CharIsVowel(prevChar) && (code == prevCode));
     }
 
     private static readonly Dictionary<char, char> SoundexCodeMap = new Dictionary<char, char>
