@@ -25,15 +25,15 @@ public class SoundexTests
         IReadOnlyList<MetaData> testData = new List<MetaData>()
         {      
                             //name       //expectedSoundIndex
-            new MetaData( "",           ""          ),
-            new MetaData( "A000",       "A"         ),
-            new MetaData( "R163",       "Robert"    ),
-            new MetaData( "R150",       "Rubin"     ),
-            new MetaData( "A161",       "Ashcroft"  ),
-            new MetaData( "T522",       "Tymczak"   ),
-            new MetaData( "P236",       "Pfister"   ),
-            new MetaData( "H555",       "Honeyman"  ),
-            new MetaData( "A120",       "aaBJE1"    ),
+            new MetaData( ""        ,         ""    ),
+            new MetaData( "A"       ,        "A000" ),
+            new MetaData( "Robert"  ,        "R163" ),
+            new MetaData( "Rubin"   ,        "R150" ),
+            new MetaData( "Ashcroft",        "A161" ),
+            new MetaData( "Tymczak" ,        "T522" ),
+            new MetaData( "Pfister" ,        "P236" ),
+            new MetaData( "Honeyman",        "H555" ),
+            new MetaData( "aaBJE1"  ,        "A120" ),
 
         };
 
