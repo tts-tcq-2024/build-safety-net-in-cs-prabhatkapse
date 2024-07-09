@@ -29,7 +29,7 @@ public class SoundexTests
             new MetaData( "A"       ,        "A000" ),
             new MetaData( "Robert"  ,        "R163" ),
             new MetaData( "Rubin"   ,        "R150" ),
-            new MetaData( "Ashcroft",        "A161" ),
+            new MetaData( "Ashcroft",        "A261" ),
             new MetaData( "Tymczak" ,        "T522" ),
             new MetaData( "Pfister" ,        "P236" ),
             new MetaData( "Honeyman",        "H555" ),
