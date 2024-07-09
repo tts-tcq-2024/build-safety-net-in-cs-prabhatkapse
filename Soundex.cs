@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 public class Soundex
@@ -11,58 +13,86 @@ public class Soundex
         }
 
         StringBuilder soundex = new StringBuilder();
-        soundex.Append(char.ToUpper(name[0]));
-        char prevCode = GetSoundexCode(name[0]);
 
-        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
-        {
-            char code = GetSoundexCode(name[i]);
-            if (code != '0' && code != prevCode)
-            {
-                soundex.Append(code);
-                prevCode = code;
-            }
-        }
+        ProcessInitialChar(name, out soundex);
 
-        while (soundex.Length < 4)
-        {
-            soundex.Append('0');
-        }
+        soundex.Append(ProcessRemainingChar(name.ToUpper()));
 
         return soundex.ToString();
     }
+    private static void ProcessInitialChar(string name, out StringBuilder soundex)
+    {
+        soundex = new StringBuilder();
+        soundex.Append(char.ToUpper(name[0]));
+    }
+
+    private static string ProcessRemainingChar(string name)
+    {
+        StringBuilder soundex = new StringBuilder();
+        char prevCode = GetSoundexCode(name[0]);
+        var vowelSeprateSameCode = false;
+
+        for (int i = 1; i < name.Length && soundex.Length < 3; i++)
+        {
+            char code = GetSoundexCode(name[i]);
+
+            checkIfVowelSeprateSameCode(prevCode, code, name[i-1], soundex, ref vowelSeprateSameCode);
+            AppendCode(ref soundex, code, ref prevCode, ref vowelSeprateSameCode);
+
+        }
+        return PadSoundex(soundex);
+    }
+
+    private static void AppendCode(ref StringBuilder soundex, char code, ref char prevCode, ref bool vowelSeprateSameCode)
+    {
+        if (ShouldAppendCode(code, prevCode, vowelSeprateSameCode))
+        {
+            soundex.Append(code);
+            prevCode = code;
+            vowelSeprateSameCode = false;
+        }
+    }
+    private static bool ShouldAppendCode(char code, char prevCode, bool vowelSeprateSameCode)
+    {
+         return ((code != prevCode) && (code != '0')) || vowelSeprateSameCode;
+    }
+
+    private static string PadSoundex(StringBuilder soundex)
+    {
+        while (soundex.Length < 3)
+        {
+            soundex.Append(0);
+        }
+        return soundex.ToString();
+    }
+
+    private static bool CharIsVowel(char Char)
+    {
+        var vowels = new List<char>() { 'A', 'E', 'I', 'O', 'U' };
+
+        return vowels.Contains(Char);
+    }
+
+
+    private static void checkIfVowelSeprateSameCode(char prevCode, char code, char prevChar, StringBuilder soundex, ref bool vowelSeprateSameCode)
+    {
+        vowelSeprateSameCode = ((soundex.Length >= 1) && CharIsVowel(prevChar) && (code == prevCode));
+    }
+
+    private static readonly Dictionary<char, char> SoundexCodeMap = new Dictionary<char, char>
+    {
+        { 'B', '1' }, { 'F', '1' }, { 'P', '1' }, { 'V', '1' },
+        { 'C', '2' }, { 'G', '2' }, { 'J', '2' }, { 'K', '2' },
+        { 'Q', '2' }, { 'S', '2' }, { 'X', '2' }, { 'Z', '2' },
+        { 'D', '3' }, { 'T', '3' },
+        { 'L', '4' },
+        { 'M', '5' }, { 'N', '5' },
+        { 'R', '6' }
+    };
 
     private static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
-        switch (c)
-        {
-            case 'B':
-            case 'F':
-            case 'P':
-            case 'V':
-                return '1';
-            case 'C':
-            case 'G':
-            case 'J':
-            case 'K':
-            case 'Q':
-            case 'S':
-            case 'X':
-            case 'Z':
-                return '2';
-            case 'D':
-            case 'T':
-                return '3';
-            case 'L':
-                return '4';
-            case 'M':
-            case 'N':
-                return '5';
-            case 'R':
-                return '6';
-            default:
-                return '0'; // For A, E, I, O, U, H, W, Y
-        }
+        return SoundexCodeMap.TryGetValue(c, out char code) ? code : '0'; // For A, E, I, O, U, H, W, Y
     }
 }
