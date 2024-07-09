@@ -54,7 +54,7 @@ public class Soundex
     } 
     private static bool ShouldAppendCode(char code, char prevCode, bool vowelSeprateSameCode)
     {
-        return (code != prevCode) || (vowelSeprateSameCode || !(code == 0));
+        return ((code != prevCode) && (code != 0)) || vowelSeprateSameCode);
     }
 
     private static string PadSoundex(StringBuilder soundex)
