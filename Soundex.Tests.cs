@@ -32,7 +32,7 @@ public class SoundexTests
             new MetaData( "Ashcroft",        "A261" ),
             new MetaData( "Tymczak" ,        "T522" ),
             new MetaData( "Pfister" ,        "P236" ),
-            new MetaData( "Honeyman",        "H555" ),
+            new MetaData( "Honeyman",        "H550" ),
             new MetaData( "aaBJE1"  ,        "A120" ),
 
         };
