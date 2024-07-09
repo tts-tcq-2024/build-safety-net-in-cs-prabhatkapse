@@ -36,9 +36,9 @@ public class Soundex
         {
             char code = GetSoundexCode(name[i]);
 
-            if (code == 0)
+            if (checkIfVowelSeprateSameCode(name, i, prevCode, name[i]))
             {
-                vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, name[i]);
+                //vowelSeprateSameCode = checkIfVowelSeprateSameCode(name, i, prevCode, name[i]);
                 continue;
             }
 
