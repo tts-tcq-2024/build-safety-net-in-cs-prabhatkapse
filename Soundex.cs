@@ -43,9 +43,10 @@ public class Soundex
             }
             else if (ShouldAppendCode(code, prevCode, vowelSeprateSameCode))
             {
-                soundex.Append(code);
-                prevCode = code;
-                vowelSeprateSameCode = false;
+                AppendCode(ref soundex, code, ref prevCode, ref vowelSeprateSameCode);
+                //soundex.Append(code);
+                //prevCode = code;
+                //vowelSeprateSameCode = false;
             }
                      
         }
@@ -56,6 +57,14 @@ public class Soundex
     {
         return (code != prevCode) || (vowelSeprateSameCode);
     }
+    
+    private static void AppendCode(ref StringBuilder soundex, char code, ref char prevCode, ref bool vowelSeprateSameCode)
+    {
+        soundex.Append(code);
+        prevCode = code;
+        vowelSeprateSameCode = false;
+    }
+
 
     private static string PadSoundex(StringBuilder soundex)
     {
